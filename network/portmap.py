@@ -1,6 +1,7 @@
 #端口扫描
 import socket
 import threading
+import argparse
 
 def scan_port(ip, port):
     try:
@@ -13,7 +14,7 @@ def scan_port(ip, port):
             print(f"端口 {port} 在 {ip} 上开放")
         sock.close()  # 关闭连接
     except socket.error:
-        pass 
+        pass
 
 def scan_ports(ip, ports):
     threads = []
@@ -26,9 +27,18 @@ def scan_ports(ip, ports):
     for thread in threads:
         thread.join()
 
-if __name__ == "__main__":
-    target_ip = "192.168.1.1"  # 设置目标IP地址
-    target_ports = [22, 80, 443, 8080, 3306, 6379]  # 要扫描的端口列表
+def main():
+    parser = argparse.ArgumentParser(description='端口扫描工具')
+    parser.add_argument('-i', '--ip', required=True, help='目标IP地址')
+    parser.add_argument('-p', '--ports', required=True, type=lambda s: [int(port) for port in s.split(',')], help='要扫描的端口列表，以逗号分隔')
+
+    args = parser.parse_args()
+
+    target_ip = args.ip
+    target_ports = args.ports
 
     print(f"开始扫描 {target_ip} 的端口...")
     scan_ports(target_ip, target_ports)
+
+if __name__ == "__main__":
+    main()

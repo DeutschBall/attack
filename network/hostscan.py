@@ -1,5 +1,6 @@
 #主机发现
 import scapy.all as scapy
+import sys
 
 def scan(ip):
     arp_request = scapy.ARP(pdst=ip)
@@ -21,6 +22,14 @@ def display_result(results_list):
     for host in results_list:
         print(f"{host['ip']}\t\t{host['mac']}")
 
-ip_range = "192.168.1.1/24"  
-scan_result = scan(ip_range)
-display_result(scan_result)
+def main():
+    if len(sys.argv) != 2:
+        print("Usage: python hostscan.py -i <target_ip>")
+        sys.exit(1)
+
+    ip_range = sys.argv[1]  
+    scan_result = scan(ip_range)
+    display_result(scan_result)
+
+if __name__ == "__main__":
+    main()
